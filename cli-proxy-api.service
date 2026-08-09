@@ -1,0 +1,20 @@
+[Unit]
+Description=CLIProxyAPI (multi-provider AI proxy incl. Antigravity)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/CLIProxyAPI
+# --local-model: use the embedded catalog only. The embedded models.json was
+# merged from upstream + the Gemini 3.6 Flash Medium/Low routes that Google
+# returns for this account but upstream omits (see /root/models.json.bak and
+# router-for-me/models PR #26). Remote refresh would overwrite those additions.
+# To resync with upstream later: re-run /tmp/merge_models.py against a fresh
+# download, rebuild, restart.
+ExecStart=/root/CLIProxyAPI/cli-proxy-api --config /root/CLIProxyAPI/config.yaml --local-model
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

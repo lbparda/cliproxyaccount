@@ -1,0 +1,14 @@
+[Unit]
+Description=Check upstream model catalog every 3h (matches CLIProxyAPI's own refresh interval)
+
+[Timer]
+# Same cadence CLIProxyAPI used before --local-model disabled its own updater.
+OnBootSec=10min
+OnUnitActiveSec=3h
+# Spread the check so it never lands exactly on the hour alongside other jobs.
+RandomizedDelaySec=10min
+# Run a missed check after downtime instead of waiting for the next window.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

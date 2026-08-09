@@ -1,0 +1,12 @@
+[Unit]
+Description=Resync CLIProxyAPI model catalog with upstream (preserving local additions)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/CLIProxyAPI/scripts/sync-models.sh
+# A rebuild is CPU-heavy; keep it off the critical path for inference traffic.
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=900
